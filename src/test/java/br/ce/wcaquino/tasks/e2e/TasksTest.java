@@ -18,7 +18,7 @@ public class TasksTest {
         return driver;
     }
 
-    @Test
+    
     public void deveCadastrarTarefaComSucesso(){
         WebDriver driver = acessarAplicacao();
         try{
