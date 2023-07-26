@@ -4,27 +4,31 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
-import java.time.LocalDate;
-import java.util.concurrent.TimeUnit;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 public class TasksTest {
 
-    public WebDriver acessarAplicacao(){
-        WebDriver driver = new ChromeDriver();
-        driver.navigate().to("http://localhost:8001/tasks/");
+    public WebDriver acessarAplicacao() throws MalformedURLException {
+        //WebDriver driver = new ChromeDriver();
+        ChromeOptions chromeOptions = new ChromeOptions();
+        WebDriver driver = new RemoteWebDriver(new URL("http://192.168.56.1:4444/wd/hub"), chromeOptions);
+
+        driver.navigate().to("http://192.168.56.1:8001/tasks/");
         //driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         return driver;
     }
 
-    
-    public void deveCadastrarTarefaComSucesso(){
+    @Test
+    public void deveCadastrarTarefaComSucesso() throws MalformedURLException {
         WebDriver driver = acessarAplicacao();
         try{
             driver.findElement(By.id("addTodo")).click();
             driver.findElement(By.id("task")).sendKeys("Teste via selenium");
-            driver.findElement(By.id("dueDate")).sendKeys(String.valueOf(LocalDate.now()));
+            driver.findElement(By.id("dueDate")).sendKeys("31/12/2050");
             driver.findElement(By.id("saveButton")).click();
             String mensagem = driver.findElement(By.id("message")).getText();
             Assert.assertEquals("Succes!", mensagem);
@@ -34,7 +38,7 @@ public class TasksTest {
     }
 
     @Test
-    public void naoDeveCadastrarTarefaSemDescricao(){
+    public void naoDeveCadastrarTarefaSemDescricao() throws MalformedURLException {
         WebDriver driver = acessarAplicacao();
         try{
             driver.findElement(By.id("addTodo")).click();
@@ -48,7 +52,7 @@ public class TasksTest {
     }
 
     @Test
-    public void naoDeveCadastrarTarefaSemData(){
+    public void naoDeveCadastrarTarefaSemData() throws MalformedURLException {
         WebDriver driver = acessarAplicacao();
         try{
             driver.findElement(By.id("addTodo")).click();
@@ -62,7 +66,7 @@ public class TasksTest {
     }
 
     @Test
-    public void naoDeveCadastrarTarefaComDataPassada(){
+    public void naoDeveCadastrarTarefaComDataPassada() throws MalformedURLException {
         WebDriver driver = acessarAplicacao();
         try{
             driver.findElement(By.id("addTodo")).click();
