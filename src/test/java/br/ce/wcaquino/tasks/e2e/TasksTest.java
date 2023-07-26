@@ -4,23 +4,27 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.LocalDate;
 
 public class TasksTest {
 
     public WebDriver acessarAplicacao() throws MalformedURLException {
-        //WebDriver driver = new ChromeDriver();
-        ChromeOptions chromeOptions = new ChromeOptions();
-        WebDriver driver = new RemoteWebDriver(new URL("http://192.168.56.1:4444/wd/hub"), chromeOptions);
+        WebDriver driver = new ChromeDriver();
+        //ChromeOptions chromeOptions = new ChromeOptions();
+        //WebDriver driver = new RemoteWebDriver(new URL("http://192.168.56.1:4444/wd/hub"), chromeOptions);
 
-        driver.navigate().to("http://192.168.56.1:8001/tasks/");
+        driver.navigate().to("http://localhost:8001/tasks/");
         //driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         return driver;
     }
+
 
     @Test
     public void deveCadastrarTarefaComSucesso() throws MalformedURLException {
@@ -31,7 +35,7 @@ public class TasksTest {
             driver.findElement(By.id("dueDate")).sendKeys("31/12/2050");
             driver.findElement(By.id("saveButton")).click();
             String mensagem = driver.findElement(By.id("message")).getText();
-            Assert.assertEquals("Succes!", mensagem);
+            Assert.assertEquals("Success!", mensagem);
         } finally {
             driver.quit();
         }
